@@ -1,0 +1,23 @@
+{
+  "last_completed": "grading",
+  "agents_done": ["agent1_data", "agent2_ml_pipeline", "agent3_deployment", "agent3_reliability", "agent4_scaffold_fix"],
+  "next": "run_training",
+  "grade": {
+    "overall_score": 10.0,
+    "stages_needing_rerun": []
+  },
+  "ml_pipeline": {
+    "status": "complete",
+    "seeds": [42, 7, 123],
+    "checkpoint": "checkpoints/model.pt",
+    "registry_name": "cifar10-cnn"
+  },
+  "reliability": {
+    "status": "complete",
+    "middleware": "app/middleware.py",
+    "drift_checker": "app/drift_checker.py",
+    "dashboard": "monitor_dashboard.py",
+    "grader": "grader.py",
+    "drift_threshold": 0.6
+  }
+}

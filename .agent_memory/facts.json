@@ -1,0 +1,13 @@
+{
+  "dataset_size": 60000,
+  "num_classes": 10,
+  "class_names": ["airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck"],
+  "split_paths": {
+    "train": "data/splits/train.pt",
+    "val": "data/splits/val.pt",
+    "test": "data/splits/test.pt"
+  },
+  "train_size": 42000,
+  "val_size": 9000,
+  "test_size": 9000
+}

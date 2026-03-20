@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "openai": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["mcp_servers/openai_server.py"],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    }
+  }
+}

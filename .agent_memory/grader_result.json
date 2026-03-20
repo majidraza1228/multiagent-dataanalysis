@@ -1,0 +1,30 @@
+{
+  "overall_score": 10.0,
+  "stages": [
+    {
+      "name": "scaffold",
+      "score": 10,
+      "max_score": 10,
+      "needs_rerun": false
+    },
+    {
+      "name": "ml_pipeline",
+      "score": 10,
+      "max_score": 10,
+      "needs_rerun": false
+    },
+    {
+      "name": "deployment",
+      "score": 10,
+      "max_score": 10,
+      "needs_rerun": false
+    },
+    {
+      "name": "reliability",
+      "score": 10,
+      "max_score": 10,
+      "needs_rerun": false
+    }
+  ],
+  "needs_rerun": []
+}
