@@ -59,6 +59,26 @@ This preserves the original orchestration style while removing the old image-ana
 
 ## Agentic Development Benefits
 
+```mermaid
+flowchart TD
+    O["Codex Orchestrator"]
+
+    A["Analysis<br/>High reasoning"]
+    D["Delivery<br/>Fast execution"]
+    R["Reliability<br/>Fast execution"]
+
+    M["Merged Product"]
+    G["Quality Check<br/>Targeted Rerun"]
+
+    O --> A
+    O --> D
+    O --> R
+    A --> M
+    D --> M
+    R --> M
+    M --> G
+```
+
 This project demonstrates the business value of agentic development. Instead of treating software delivery as one long sequential task, the system breaks the work into parallel streams with clear ownership: analysis logic, product delivery, and operational reliability. That improves delivery speed, keeps responsibilities separated, and makes the workflow easier to manage.
 
 From a management perspective, the value is not just technical elegance. The value is better use of time and compute budget. High-reasoning capacity is used only for work that affects system quality or design decisions, while structured implementation work is handled by faster, lower-cost profiles. That keeps cost under control without reducing output quality.
