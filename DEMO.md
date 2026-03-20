@@ -121,6 +121,16 @@ python monitor_dashboard.py
 - The monitoring layer logs every analysis to JSONL.
 - The project keeps a Codex-style multi-agent structure even though the domain is now spreadsheet analysis.
 
+## How To Explain MLflow
+
+### 30-second business script
+
+"MLflow is the tracking layer for this workflow. It keeps a record of each analysis run, the quality metrics that were produced, and the generated artifacts. From a business perspective, that gives us better traceability, repeatability, and visibility into how the workflow performs over time instead of relying on one-off scripts."
+
+### 30-second engineering script
+
+"MLflow is being used here as the experiment tracking and artifact storage layer for workbook profiling runs. The pipeline logs quality metrics, saves generated artifacts, and lets us compare runs across different input datasets. That gives us reproducibility and a structured way to evaluate changes in the analysis workflow."
+
 ## Suggested Demo Files
 
 Use these sample CSV files from the `samples/` folder:
