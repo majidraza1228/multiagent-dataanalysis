@@ -119,3 +119,20 @@ Refactoring with clear instructions       → balanced
 Mid-complexity feature implementation     → balanced
 General coding (default)                  → balanced
 ```
+
+## How To Read Routing
+
+This file routes work by capability level, not by hardcoded vendor model name.
+
+- `high` means use the strongest available reasoning profile for architecture, heuristics, grading, and trade-off decisions
+- `fast` means use a lower-cost faster profile for structured implementation work such as routes, schemas, logging, and scaffolding
+- `balanced` means use the default middle-ground profile for general coding and refactoring
+
+For this project, the intended task routing is:
+
+- analysis pipeline work → `high`
+- deployment work → `fast`
+- reliability work → `fast`
+- moderate cross-cutting coding work → `balanced`
+
+If you need the exact underlying model name, that depends on the Codex runtime configuration outside this repository. `AGENTS.md` defines which capability tier should be used for a task, not the provider-specific model alias.
