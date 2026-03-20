@@ -2,12 +2,33 @@
 
 This project should be demoed with `3` terminals by default. Use `4` terminals if you also want to show MLflow.
 
+## Local Environment Setup
+
+Use Python `3.11` and a local virtual environment before starting the demo.
+
+```bash
+cd /Users/syedraza/multiagent-dataanalysis
+python3.11 -m venv .venv
+source .venv/bin/activate
+python --version
+python -m pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+```
+
+Every new terminal used for the demo should activate the same environment first:
+
+```bash
+cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
+```
+
 ## Recommended 3-Terminal Demo
 
 ### Terminal 1: FastAPI backend
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
@@ -16,6 +37,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 python ui/app.py
 ```
 
@@ -28,6 +50,7 @@ Open these in the browser:
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 python monitor_dashboard.py
 ```
 
@@ -41,6 +64,7 @@ If you want to show the analysis pipeline and experiment tracking as well, add M
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 mlflow server --host 0.0.0.0 --port 5000 \
   --backend-store-uri sqlite:///mlflow.db \
   --default-artifact-root ./mlruns
@@ -50,6 +74,7 @@ mlflow server --host 0.0.0.0 --port 5000 \
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 python model/train.py
 python compare_runs.py
 ```
@@ -62,6 +87,7 @@ Open MLflow here:
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
 python monitor_dashboard.py
 ```
 
