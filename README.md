@@ -57,9 +57,9 @@ The project keeps the same three-part multi-agent layout:
 
 This preserves the original orchestration style while removing the old image-analysis domain.
 
-## How Multi-Agent Design Helps This Project
+## Agentic Development Benefits
 
-This project is a good fit for a multi-agent build because the work naturally breaks into independent areas. Workbook analysis logic, API and UI delivery, and operational reliability are related, but they do not need to be implemented in one long sequential thread. Splitting them into dedicated agents reduces context switching, shortens build time, and makes ownership clear.
+This project is a good fit for agentic development because the work naturally breaks into independent areas. Workbook analysis logic, API and UI delivery, and operational reliability are related, but they do not need to be implemented in one long sequential thread. Splitting them into dedicated agents reduces context switching, shortens build time, and makes ownership clear.
 
 The main efficiency gain comes from parallel execution. Instead of having one agent read every file, hold the entire system in context, and build each layer one by one, the orchestrator assigns clear file boundaries and runs the agents at the same time. That means:
 
@@ -117,7 +117,7 @@ The codebase benefits from this agent split because each part has a different en
 - the API and UI layer is integration-heavy and structure-heavy
 - the reliability layer is operations-heavy and validation-heavy
 
-That makes it a strong example of why multi-agent development is better than a single monolithic session for medium-sized systems. The project can move faster, stay more organized, and use compute budget more carefully.
+That makes it a strong example of why agentic development is better than a single monolithic session for medium-sized systems. The project can move faster, stay more organized, and use compute budget more carefully.
 
 ## Practical Outcome
 
