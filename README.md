@@ -59,21 +59,23 @@ This preserves the original orchestration style while removing the old image-ana
 
 ## Agentic Development Benefits
 
-This project is a good fit for agentic development because the work naturally breaks into independent areas. Workbook analysis logic, API and UI delivery, and operational reliability are related, but they do not need to be implemented in one long sequential thread. Splitting them into dedicated agents reduces context switching, shortens build time, and makes ownership clear.
+This project demonstrates the business value of agentic development. Instead of treating software delivery as one long sequential task, the system breaks the work into parallel streams with clear ownership: analysis logic, product delivery, and operational reliability. That improves delivery speed, keeps responsibilities separated, and makes the workflow easier to manage.
 
-The main efficiency gain comes from parallel execution. Instead of having one agent read every file, hold the entire system in context, and build each layer one by one, the orchestrator assigns clear file boundaries and runs the agents at the same time. That means:
+From a management perspective, the value is not just technical elegance. The value is better use of time and compute budget. High-reasoning capacity is used only for work that affects system quality or design decisions, while structured implementation work is handled by faster, lower-cost profiles. That keeps cost under control without reducing output quality.
 
-- the analysis agent can focus on workbook heuristics and MLflow artifacts
-- the deployment agent can focus on user-facing delivery through FastAPI and Gradio
-- the reliability agent can focus on logging, monitoring, grading, and rerun criteria
+This operating model creates a practical delivery advantage:
 
-This separation reduces collisions and avoids the common problem where one large agent repeatedly re-reads the whole codebase for every small change.
+- faster implementation through parallel execution
+- lower cost through smarter model allocation
+- clearer ownership across major workstreams
+- less rework because grading and checkpoints make corrections targeted
+- better predictability because each agent owns a well-defined scope
 
-## Why This Is More Efficient
+## Why This Is Operationally Efficient
 
-The project uses task-based routing instead of treating every coding step as equally hard. Some work needs stronger reasoning, while some work is mostly structured implementation. The orchestrator takes advantage of that difference.
+The project uses task-based routing instead of treating every activity as equally complex. Some work requires deeper reasoning and trade-off judgment, while other work is mainly structured implementation. The orchestrator uses that difference to improve efficiency.
 
-### High-reasoning work
+### Higher-value reasoning where it matters
 
 The analysis pipeline agent uses the stronger Codex profile because it handles the parts where a wrong decision is expensive:
 
@@ -82,9 +84,9 @@ The analysis pipeline agent uses the stronger Codex profile because it handles t
 - shaping recommendation logic
 - choosing what to log into MLflow and how to compare runs
 
-These are decisions with architectural consequences. Using a stronger reasoning profile here reduces rework.
+These are decisions with architectural consequences. Using a stronger reasoning profile here reduces downstream rework and improves decision quality.
 
-### Fast-execution work
+### Lower-cost execution where structure is already clear
 
 The deployment and reliability agents use the faster Codex profile for work that is more mechanical:
 
@@ -99,7 +101,7 @@ These tasks still matter, but they do not need the same level of expensive reaso
 
 ## Cost-Effective Model Usage
 
-The project is cost-effective because it does not spend high-end reasoning capacity on everything.
+The project is cost-effective because it does not spend premium reasoning capacity on every task.
 
 The routing strategy is simple:
 
@@ -107,7 +109,7 @@ The routing strategy is simple:
 - use the faster profile for implementation tasks that are already well-bounded
 - keep file ownership strict so agents do not overwrite each other and force reruns
 
-This matters in practice because the most expensive part of agentic development is not just tokens, it is wasted cycles. If a strong model is used for boilerplate, you pay more than necessary. If a cheap model is used for architectural reasoning, you may save money early but lose time later fixing the result. This project balances that by assigning the cheapest capable profile for each category of work.
+This matters in practice because the most expensive part of agentic development is not only token usage, it is wasted cycles and avoidable rework. If a premium model is used for boilerplate, cost rises without meaningful benefit. If a low-cost model is used for architectural reasoning, delivery may slow later due to fixes and redesign. This project avoids both extremes by assigning the cheapest capable profile for each type of work.
 
 ## Why The Project Works Well With This Approach
 
@@ -117,11 +119,11 @@ The codebase benefits from this agent split because each part has a different en
 - the API and UI layer is integration-heavy and structure-heavy
 - the reliability layer is operations-heavy and validation-heavy
 
-That makes it a strong example of why agentic development is better than a single monolithic session for medium-sized systems. The project can move faster, stay more organized, and use compute budget more carefully.
+That makes it a strong example of why agentic development is useful for medium-sized systems. The project can move faster, stay more organized, and use compute budget more carefully.
 
 ## Practical Outcome
 
-By adopting this model-aware multi-agent workflow, the project gains:
+By adopting this model-aware agentic workflow, the project gains:
 
 - faster implementation through parallel work
 - clearer separation of concerns
@@ -129,7 +131,7 @@ By adopting this model-aware multi-agent workflow, the project gains:
 - fewer merge conflicts because each agent owns specific files
 - easier recovery because grading and checkpoints make reruns targeted instead of global
 
-In short, the system is not just multi-agent for presentation value. The split directly improves delivery speed, code organization, and cost efficiency.
+In short, the system is not agentic for presentation value. The workflow directly improves delivery speed, cost efficiency, and execution discipline.
 
 ## Project Structure
 
