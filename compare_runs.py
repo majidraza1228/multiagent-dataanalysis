@@ -1,7 +1,9 @@
+import os
+
 import mlflow
 from tabulate import tabulate
 
-mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
 client = mlflow.tracking.MlflowClient()
 
 experiment = client.get_experiment_by_name("excel-sheet-analysis")

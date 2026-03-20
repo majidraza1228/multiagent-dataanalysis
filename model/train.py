@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import mlflow
@@ -7,6 +8,7 @@ import pandas as pd
 DATA_DIR = Path("data")
 PROFILE_PATH = Path("checkpoints/model.pt")
 SUPPORTED_SUFFIXES = {".csv", ".xlsx", ".xls"}
+TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
 
 
 def load_frame(path: Path) -> pd.DataFrame:
@@ -48,7 +50,7 @@ def main():
         print("No workbook files found in data/. Add .csv, .xlsx, or .xls files before training.")
         return
 
-    mlflow.set_tracking_uri("http://localhost:5000")
+    mlflow.set_tracking_uri(TRACKING_URI)
     mlflow.set_experiment("excel-sheet-analysis")
 
     summaries = []

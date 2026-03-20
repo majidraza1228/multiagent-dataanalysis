@@ -70,11 +70,23 @@ mlflow server --host 0.0.0.0 --port 5000 \
   --default-artifact-root ./mlruns
 ```
 
+If port `5000` is already in use, run MLflow on `5001` instead:
+
+```bash
+cd /Users/syedraza/multiagent-dataanalysis
+source .venv/bin/activate
+export MLFLOW_TRACKING_URI=http://localhost:5001
+mlflow server --host 0.0.0.0 --port 5001 \
+  --backend-store-uri sqlite:///mlflow.db \
+  --default-artifact-root ./mlruns
+```
+
 ### Terminal 4: Run profiling scripts
 
 ```bash
 cd /Users/syedraza/multiagent-dataanalysis
 source .venv/bin/activate
+export MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://localhost:5000}
 python model/train.py
 python compare_runs.py
 ```
