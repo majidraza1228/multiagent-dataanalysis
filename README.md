@@ -179,6 +179,18 @@ multiagent-dataanalysis/
 └── .agent_memory/
 ```
 
+## Purpose Of `.agent_memory`
+
+The `.agent_memory` folder is the lightweight memory layer for the agentic workflow. It stores structured state that helps the system keep track of what has already been completed, what should run next, and what quality checks have returned.
+
+In this project, it is mainly used for:
+
+- session continuity through `session.json`
+- grading results through `grader_result.json`
+- reusable structured project facts through files such as `facts.json`
+
+This helps the workflow resume after interruption, rerun only weak stages, and avoid repeating work that has already been completed.
+
 ## Running the Project
 
 ```bash
