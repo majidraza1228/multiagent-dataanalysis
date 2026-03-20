@@ -85,11 +85,13 @@ python monitor_dashboard.py
 
 ## Suggested Demo Files
 
-Prepare `2` or `3` files before presenting:
+Use these sample CSV files from the `samples/` folder:
 
-- `sales.csv` with columns like `date,revenue,region`
-- `finance.xlsx` with multiple sheets
-- one intentionally messy file with missing values or duplicates
+- `samples/sales.csv` for a clean workbook-style demo
+- `samples/messy_sales.csv` to show missing values and duplicates
+- `samples/operations_report.csv` to show a different business dataset
+
+If needed, convert these CSV files into `.xlsx` files before the demo and upload those instead.
 
 ## Terminal Recommendation
 
