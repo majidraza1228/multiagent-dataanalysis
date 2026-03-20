@@ -1,0 +1,5 @@
+customer,region,order,amount,status
+Acme Corp,EMEA,ORD-1001,3400,shipped
+Nexa Ltd,NA,ORD-1002,2850,pending
+BluePeak,APAC,ORD-1003,4100,shipped
+Acme Corp,EMEA,ORD-1004,1900,returned
