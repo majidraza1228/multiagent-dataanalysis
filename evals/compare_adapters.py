@@ -7,6 +7,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from eval_framework.datasets import load_jsonl_dataset
+from eval_framework.judges import OpenAIJudge, RubricJudge
 from eval_framework.reporter import (
     log_comparison_to_mlflow,
     write_html_comparison_report,
@@ -32,6 +33,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--dataset", default=str(DEFAULT_DATASET), help="Path to the eval dataset JSONL file.")
     parser.add_argument("--report", default=str(DEFAULT_SUMMARY_REPORT), help="Path to write the summary JSON.")
     parser.add_argument("--html-report", default=str(DEFAULT_HTML_REPORT), help="Path to write the HTML report.")
+    parser.add_argument("--workers", type=int, default=1, help="Number of parallel workers for eval execution.")
+    parser.add_argument(
+        "--enable-openai-judge",
+        action="store_true",
+        help="Enable the optional OpenAI judge for llm_judge assertions.",
+    )
     parser.add_argument(
         "--log-mlflow",
         action="store_true",
@@ -50,12 +57,15 @@ def main() -> int:
     registry = build_registry()
     requested_adapters = [name.strip() for name in args.adapters.split(",") if name.strip()]
     cases = load_jsonl_dataset(args.dataset)
+    judges = {"rubric": RubricJudge()}
+    if args.enable_openai_judge:
+        judges["openai"] = OpenAIJudge()
 
     run_results = []
     report_paths: list[Path] = []
     for name in requested_adapters:
         adapter = registry.create(name)
-        result = run_eval(adapter, cases)
+        result = run_eval(adapter, cases, workers=max(args.workers, 1), judges=judges)
         result_payload = result.to_dict()
         run_results.append(result_payload)
         adapter_report_path = Path(args.report).with_name(f"{name}.json")
@@ -65,7 +75,8 @@ def main() -> int:
         print(
             f"{result.adapter_name}: "
             f"cases {result.passed_cases}/{result.total_cases} "
-            f"({result.pass_rate:.2%}), avg latency {result.average_latency_ms:.2f} ms"
+            f"({result.pass_rate:.2%}), avg latency {result.average_latency_ms:.2f} ms, "
+            f"total cost ${result.total_cost_usd:.4f}"
         )
 
     payload = {

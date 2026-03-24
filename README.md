@@ -191,6 +191,30 @@ In this project, it is mainly used for:
 
 This helps the workflow resume after interruption, rerun only weak stages, and avoid repeating work that has already been completed.
 
+## Evaluation Framework
+
+The project now includes a separate reusable eval layer under `eval_framework/` and `evals/`.
+
+It supports:
+
+- adapter-based evaluation so the same dataset can test multiple implementations
+- comparison of the direct Python analyzer and the FastAPI execution path
+- JSON and HTML reporting
+- optional MLflow logging for eval history
+- optional rubric and LLM judge hooks for qualitative scoring
+- synthetic test generation for larger benchmark sets
+- parallel execution to reduce eval wall-clock time
+
+The main commands are:
+
+```bash
+make eval
+make eval-compare
+make eval-generate
+```
+
+For detailed architecture and validation guidance, see [`EVALS.md`](/Users/syedraza/multiagent-dataanalysis/EVALS.md).
+
 ## Running the Project
 
 ```bash
@@ -200,6 +224,8 @@ make ui
 make monitor
 make test
 make grade
+make eval
+make eval-compare
 ```
 
 Optional MLflow flow:
@@ -224,3 +250,11 @@ python compare_runs.py
 | Monitoring | JSONL + tabulate |
 | Experiment tracking | MLflow |
 | Testing | pytest |
+
+## Eval Notes
+
+- `evals/run_eval.py` runs one adapter against a dataset
+- `evals/compare_adapters.py` compares multiple adapters on the same benchmark
+- `evals/generate_cases.py` creates larger synthetic eval datasets from sample CSV seeds
+- cost, latency, and qualitative judge metadata are included in eval reports
+- CI/CD automation is intentionally not part of the current eval scope

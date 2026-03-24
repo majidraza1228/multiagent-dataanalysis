@@ -29,6 +29,7 @@ def write_html_comparison_report(path: str | Path, payload: dict[str, Any]) -> P
             f"<td>{run['passed_assertions']}/{run['total_assertions']}</td>"
             f"<td>{run['assertion_pass_rate']:.2%}</td>"
             f"<td>{run.get('average_latency_ms', 0.0):.2f}</td>"
+            f"<td>${run.get('total_cost_usd', 0.0):.4f}</td>"
             "</tr>"
         )
 
@@ -151,6 +152,7 @@ def write_html_comparison_report(path: str | Path, payload: dict[str, Any]) -> P
             <th>Assertions</th>
             <th>Assertion Pass Rate</th>
             <th>Avg Latency ms</th>
+            <th>Total Cost USD</th>
           </tr>
         </thead>
         <tbody>
@@ -195,6 +197,7 @@ def log_run_to_mlflow(result: dict[str, Any], report_paths: list[str | Path], ex
                 "assertion_pass_rate": result["assertion_pass_rate"],
                 "average_latency_ms": result.get("average_latency_ms", 0.0),
                 "failed_cases": result["failed_cases"],
+                "total_cost_usd": result.get("total_cost_usd", 0.0),
             }
         )
         for report_path in report_paths:
@@ -223,6 +226,7 @@ def log_comparison_to_mlflow(payload: dict[str, Any], report_paths: list[str | P
             mlflow.log_metric(f"{prefix}_pass_rate", item["pass_rate"])
             mlflow.log_metric(f"{prefix}_assertion_pass_rate", item["assertion_pass_rate"])
             mlflow.log_metric(f"{prefix}_average_latency_ms", item.get("average_latency_ms", 0.0))
+            mlflow.log_metric(f"{prefix}_total_cost_usd", item.get("total_cost_usd", 0.0))
         for report_path in report_paths:
             if Path(report_path).exists():
                 mlflow.log_artifact(str(report_path), artifact_path="eval_reports")

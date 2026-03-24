@@ -1,4 +1,4 @@
-.PHONY: install train serve ui monitor test grade eval eval-compare
+.PHONY: install train serve ui monitor test grade eval eval-compare eval-generate
 
 install:
 	pip install -r requirements.txt
@@ -23,6 +23,9 @@ eval:
 
 eval-compare:
 	python3 evals/compare_adapters.py
+
+eval-generate:
+	python3 evals/generate_cases.py
 
 grade:
 	python grader.py

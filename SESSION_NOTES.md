@@ -6,6 +6,7 @@
 - Local path: `/Users/syedraza/multiagent-dataanalysis`
 - Git remote: `https://github.com/majidraza1228/multiagent-dataanalysis.git`
 - Main branch: `main`
+- Eval framework now includes adapter comparison, cost tracking, rubric and optional LLM judge hooks, synthetic case generation, and parallel execution
 
 ## Environment Notes
 
@@ -28,6 +29,17 @@
 - Use `MLFLOW_TRACKING_URI` when the server is not on the default port
 - MLflow scripts now read `MLFLOW_TRACKING_URI` from the environment
 - Copy sample files into `data/` before running `python model/train.py`
+- Eval scripts can also log to MLflow with `--log-mlflow`
+
+## Eval Notes
+
+- Main docs are in `EVALS.md`
+- Run a single eval adapter with `python evals/run_eval.py`
+- Compare adapters with `python evals/compare_adapters.py`
+- Generate larger synthetic datasets with `python evals/generate_cases.py --copies-per-source 20`
+- Parallel execution is available through `--workers`
+- Qualitative scoring supports `rubric_judge` locally and optional `llm_judge`
+- CI/CD automation is intentionally excluded from the current eval scope
 
 ## Agentic Workflow Notes
 

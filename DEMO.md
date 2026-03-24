@@ -1,6 +1,6 @@
 # Demo Guide
 
-This project should be demoed with `3` terminals by default. Use `4` terminals if you also want to show MLflow.
+This project should be demoed with `3` terminals by default. Use `4` terminals if you also want to show MLflow and the eval layer.
 
 ## Local Environment Setup
 
@@ -58,7 +58,7 @@ Use this terminal during the demo to show that every workbook analysis is logged
 
 ## Recommended 4-Terminal Demo
 
-If you want to show the analysis pipeline and experiment tracking as well, add MLflow.
+If you want to show the analysis pipeline, experiment tracking, and eval framework, add MLflow.
 
 ### Terminal 3: MLflow server
 
@@ -89,6 +89,7 @@ source .venv/bin/activate
 export MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI:-http://localhost:5000}
 python model/train.py
 python compare_runs.py
+python evals/compare_adapters.py --workers 4
 ```
 
 Open MLflow here:
@@ -111,7 +112,7 @@ python monitor_dashboard.py
 4. Show the sheet summary table.
 5. Move to FastAPI docs and repeat the same upload via `POST /api/analyze`.
 6. Show the monitoring dashboard output in the third terminal.
-7. If using 4 terminals, show MLflow runs and profiling artifacts.
+7. If using 4 terminals, show MLflow runs, profiling artifacts, and the eval comparison report.
 
 ## What To Highlight
 
@@ -119,6 +120,7 @@ python monitor_dashboard.py
 - The API returns workbook structure, confidence, issues, and recommendations.
 - The Gradio UI is a lightweight analyst-facing interface.
 - The monitoring layer logs every analysis to JSONL.
+- The eval framework compares implementations with the same benchmark and reports latency and cost.
 - The project keeps a Codex-style multi-agent structure even though the domain is now spreadsheet analysis.
 
 ## How To Explain MLflow
@@ -139,10 +141,22 @@ Use these sample CSV files from the `samples/` folder:
 - `samples/messy_sales.csv` to show missing values and duplicates
 - `samples/operations_report.csv` to show a different business dataset
 
+If you want to demo scale generation for evals, first run:
+
+```bash
+python evals/generate_cases.py --copies-per-source 20
+```
+
+Then show:
+
+```bash
+python evals/compare_adapters.py --dataset evals/generated/generated_cases.jsonl --workers 4
+```
+
 If needed, convert these CSV files into `.xlsx` files before the demo and upload those instead.
 
 ## Terminal Recommendation
 
 - Use `3` terminals for the main demo: backend, UI, monitoring.
-- Use `4` terminals for the fuller engineering demo: backend, UI, MLflow, monitoring.
+- Use `4` terminals for the fuller engineering demo: backend, UI, MLflow/evals, monitoring.
 - Use `2` terminals only if you need a shortened backup version.

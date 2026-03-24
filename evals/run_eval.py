@@ -7,6 +7,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from eval_framework.datasets import load_jsonl_dataset
+from eval_framework.judges import OpenAIJudge, RubricJudge
 from eval_framework.reporter import log_run_to_mlflow, write_json_report
 from eval_framework.runner import run_eval
 from evals.registry import build_registry
@@ -26,6 +27,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--dataset", default=str(DEFAULT_DATASET), help="Path to the eval dataset JSONL file.")
     parser.add_argument("--report", default=str(DEFAULT_REPORT), help="Path to write the eval report JSON.")
+    parser.add_argument("--workers", type=int, default=1, help="Number of parallel workers for eval execution.")
+    parser.add_argument(
+        "--enable-openai-judge",
+        action="store_true",
+        help="Enable the optional OpenAI judge for llm_judge assertions.",
+    )
     parser.add_argument(
         "--log-mlflow",
         action="store_true",
@@ -44,7 +51,10 @@ def main() -> int:
     cases = load_jsonl_dataset(args.dataset)
     registry = build_registry()
     adapter = registry.create(args.adapter)
-    result = run_eval(adapter, cases)
+    judges = {"rubric": RubricJudge()}
+    if args.enable_openai_judge:
+        judges["openai"] = OpenAIJudge()
+    result = run_eval(adapter, cases, workers=max(args.workers, 1), judges=judges)
     report_path = write_json_report(args.report, result.to_dict())
 
     print(f"Adapter: {result.adapter_name}")
@@ -55,6 +65,7 @@ def main() -> int:
         f"({result.assertion_pass_rate:.2%})"
     )
     print(f"Average latency: {result.average_latency_ms:.2f} ms")
+    print(f"Total cost: ${result.total_cost_usd:.4f}")
     print(f"Report: {report_path}")
     if args.log_mlflow:
         run_id = log_run_to_mlflow(result.to_dict(), [report_path], args.experiment)

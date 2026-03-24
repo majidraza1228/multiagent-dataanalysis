@@ -1,32 +1,34 @@
 {
   "adapter_name": "fastapi-api",
   "framework": "fastapi",
-  "total_cases": 3,
-  "passed_cases": 3,
+  "total_cases": 9,
+  "passed_cases": 9,
   "failed_cases": 0,
   "pass_rate": 1.0,
-  "total_assertions": 18,
-  "passed_assertions": 18,
+  "total_assertions": 45,
+  "passed_assertions": 45,
   "assertion_pass_rate": 1.0,
-  "total_latency_ms": 30.1602,
-  "average_latency_ms": 10.0534,
+  "total_latency_ms": 213.4604,
+  "average_latency_ms": 23.7178,
+  "total_cost_usd": 0.0,
+  "average_cost_usd": 0.0,
   "cases": [
     {
-      "id": "sales_clean_financial",
+      "id": "sales_duplicate_tail_0",
       "tags": [
-        "smoke",
-        "financial"
+        "generated",
+        "sales",
+        "duplicate_tail"
       ],
       "passed": true,
-      "latency_ms": 15.4047,
+      "latency_ms": 21.9677,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 150,
+        "estimated_input_tokens": 37
+      },
       "assertions": [
-        {
-          "path": "dataset_type",
-          "op": "eq",
-          "expected": "financial",
-          "actual": "financial",
-          "passed": true
-        },
         {
           "path": "sheet_count",
           "op": "eq",
@@ -36,42 +38,56 @@
         },
         {
           "path": "summary.total_rows",
-          "op": "eq",
-          "expected": 4,
-          "actual": 4,
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
           "passed": true
         },
         {
           "path": "summary.total_columns",
-          "op": "eq",
-          "expected": 4,
+          "op": "gte",
+          "expected": 1,
           "actual": 4,
           "passed": true
         },
         {
-          "path": "issues",
-          "op": "contains",
-          "expected": "Workbook contains 1 missing cells",
-          "actual": [
-            "Workbook contains 1 missing cells"
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
           ],
-          "passed": true
+          "actual": [
+            "Review 1 duplicate rows before downstream reporting",
+            "Impute or remove missing values in critical columns",
+            "Use the detected numeric columns to build pivot summaries and trend checks"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute",
+            "duplicate"
+          ],
+          "threshold": 1
         },
         {
-          "path": "confidence",
-          "op": "gte",
-          "expected": 0.55,
-          "actual": 0.5695,
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "sales_duplicate_tail_0\\.csv",
+          "actual": "sales_duplicate_tail_0.csv",
           "passed": true
         }
       ],
       "prediction": {
-        "workbook_name": "sales.csv",
+        "workbook_name": "sales_duplicate_tail_0.csv",
         "sheet_count": 1,
         "dataset_type": "financial",
-        "confidence": 0.5695,
+        "confidence": 0.5825,
         "summary": {
-          "total_rows": 4,
+          "total_rows": 5,
           "total_columns": 4,
           "missing_cells": 1,
           "numeric_column_count": 2
@@ -82,9 +98,151 @@
         "sheet_summaries": [
           {
             "sheet_name": "Sheet1",
-            "row_count": 4,
+            "row_count": 5,
             "column_count": 4,
             "missing_cells": 1,
+            "duplicate_rows": 1,
+            "numeric_columns": [
+              "revenue",
+              "orders"
+            ],
+            "text_columns": [
+              "date",
+              "region"
+            ],
+            "column_names": [
+              "date",
+              "revenue",
+              "region",
+              "orders"
+            ],
+            "numeric_summary": {
+              "revenue": {
+                "min": 990.0,
+                "max": 1675.0,
+                "mean": 1303.0
+              },
+              "orders": {
+                "min": 10.0,
+                "max": 17.0,
+                "mean": 13.2
+              }
+            },
+            "preview_rows": [
+              {
+                "date": "2024-01-01",
+                "revenue": 1200,
+                "region": "EMEA",
+                "orders": 12
+              },
+              {
+                "date": "2024-01-02",
+                "revenue": 1450,
+                "region": "",
+                "orders": 15
+              },
+              {
+                "date": "2024-01-03",
+                "revenue": 990,
+                "region": "APAC",
+                "orders": 10
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Review 1 duplicate rows before downstream reporting",
+          "Impute or remove missing values in critical columns",
+          "Use the detected numeric columns to build pivot summaries and trend checks"
+        ]
+      }
+    },
+    {
+      "id": "sales_missing_head_1",
+      "tags": [
+        "generated",
+        "sales",
+        "missing_head"
+      ],
+      "passed": true,
+      "latency_ms": 22.3282,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 115,
+        "estimated_input_tokens": 28
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
+          "op": "eq",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Impute or remove missing values in critical columns",
+            "Use the detected numeric columns to build pivot summaries and trend checks"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "sales_missing_head_1\\.csv",
+          "actual": "sales_missing_head_1.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "sales_missing_head_1.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.507,
+        "summary": {
+          "total_rows": 4,
+          "total_columns": 4,
+          "missing_cells": 2,
+          "numeric_column_count": 2
+        },
+        "issues": [
+          "Workbook contains 2 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 4,
+            "column_count": 4,
+            "missing_cells": 2,
             "duplicate_rows": 0,
             "numeric_columns": [
               "revenue",
@@ -114,7 +272,7 @@
             },
             "preview_rows": [
               {
-                "date": "2024-01-01",
+                "date": "",
                 "revenue": 1200,
                 "region": "EMEA",
                 "orders": 12
@@ -141,24 +299,21 @@
       }
     },
     {
-      "id": "operations_report_operations",
+      "id": "sales_reordered_columns_2",
       "tags": [
-        "smoke",
-        "operations"
+        "generated",
+        "sales",
+        "reordered_columns"
       ],
       "passed": true,
-      "latency_ms": 7.2854,
+      "latency_ms": 48.6782,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 125,
+        "estimated_input_tokens": 31
+      },
       "assertions": [
-        {
-          "path": "dataset_type",
-          "op": "in",
-          "expected": [
-            "operations",
-            "financial"
-          ],
-          "actual": "financial",
-          "passed": true
-        },
         {
           "path": "sheet_count",
           "op": "eq",
@@ -168,42 +323,195 @@
         },
         {
           "path": "summary.total_rows",
-          "op": "eq",
-          "expected": 4,
+          "op": "gte",
+          "expected": 1,
           "actual": 4,
           "passed": true
         },
         {
           "path": "summary.total_columns",
-          "op": "eq",
-          "expected": 5,
-          "actual": 5,
-          "passed": true
-        },
-        {
-          "path": "issues",
-          "op": "contains",
-          "expected": "Workbook contains 1 missing cells",
-          "actual": [
-            "Workbook contains 1 missing cells"
-          ],
-          "passed": true
-        },
-        {
-          "path": "confidence",
           "op": "gte",
-          "expected": 0.55,
-          "actual": 0.602,
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Impute or remove missing values in critical columns",
+            "Use the detected numeric columns to build pivot summaries and trend checks"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "sales_reordered_columns_2\\.csv",
+          "actual": "sales_reordered_columns_2.csv",
           "passed": true
         }
       ],
       "prediction": {
-        "workbook_name": "operations_report.csv",
+        "workbook_name": "sales_reordered_columns_2.csv",
         "sheet_count": 1,
         "dataset_type": "financial",
-        "confidence": 0.602,
+        "confidence": 0.5695,
         "summary": {
           "total_rows": 4,
+          "total_columns": 4,
+          "missing_cells": 1,
+          "numeric_column_count": 2
+        },
+        "issues": [
+          "Workbook contains 1 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 4,
+            "column_count": 4,
+            "missing_cells": 1,
+            "duplicate_rows": 0,
+            "numeric_columns": [
+              "orders",
+              "revenue"
+            ],
+            "text_columns": [
+              "region",
+              "date"
+            ],
+            "column_names": [
+              "orders",
+              "region",
+              "revenue",
+              "date"
+            ],
+            "numeric_summary": {
+              "orders": {
+                "min": 10.0,
+                "max": 17.0,
+                "mean": 13.5
+              },
+              "revenue": {
+                "min": 990.0,
+                "max": 1675.0,
+                "mean": 1328.75
+              }
+            },
+            "preview_rows": [
+              {
+                "orders": 12,
+                "region": "EMEA",
+                "revenue": 1200,
+                "date": "2024-01-01"
+              },
+              {
+                "orders": 15,
+                "region": "",
+                "revenue": 1450,
+                "date": "2024-01-02"
+              },
+              {
+                "orders": 10,
+                "region": "APAC",
+                "revenue": 990,
+                "date": "2024-01-03"
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Impute or remove missing values in critical columns",
+          "Use the detected numeric columns to build pivot summaries and trend checks"
+        ]
+      }
+    },
+    {
+      "id": "operations_report_duplicate_tail_0",
+      "tags": [
+        "generated",
+        "operations_report",
+        "duplicate_tail"
+      ],
+      "passed": true,
+      "latency_ms": 49.1005,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 224,
+        "estimated_input_tokens": 56
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
+          "op": "eq",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Review 1 duplicate rows before downstream reporting",
+            "Impute or remove missing values in critical columns"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "impute",
+            "duplicate"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "operations_report_duplicate_tail_0\\.csv",
+          "actual": "operations_report_duplicate_tail_0.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "operations_report_duplicate_tail_0.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.6125,
+        "summary": {
+          "total_rows": 5,
           "total_columns": 5,
           "missing_cells": 1,
           "numeric_column_count": 1
@@ -214,10 +522,10 @@
         "sheet_summaries": [
           {
             "sheet_name": "Sheet1",
-            "row_count": 4,
+            "row_count": 5,
             "column_count": 5,
             "missing_cells": 1,
-            "duplicate_rows": 0,
+            "duplicate_rows": 1,
             "numeric_columns": [
               "amount"
             ],
@@ -238,7 +546,7 @@
               "amount": {
                 "min": 1900.0,
                 "max": 4100.0,
-                "mean": 3062.5
+                "mean": 3130.0
               }
             },
             "preview_rows": [
@@ -267,89 +575,518 @@
           }
         ],
         "recommendations": [
+          "Review 1 duplicate rows before downstream reporting",
           "Impute or remove missing values in critical columns"
         ]
       }
     },
     {
-      "id": "messy_sales_detects_missing",
+      "id": "operations_report_missing_head_1",
       "tags": [
-        "regression",
-        "data-quality"
+        "generated",
+        "operations_report",
+        "missing_head"
       ],
       "passed": true,
-      "latency_ms": 7.4701,
+      "latency_ms": 15.8292,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 177,
+        "estimated_input_tokens": 44
+      },
       "assertions": [
         {
-          "path": "dataset_type",
+          "path": "sheet_count",
           "op": "eq",
-          "expected": "financial",
-          "actual": "financial",
+          "expected": 1,
+          "actual": 1,
           "passed": true
         },
         {
           "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Impute or remove missing values in critical columns"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "impute"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "operations_report_missing_head_1\\.csv",
+          "actual": "operations_report_missing_head_1.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "operations_report_missing_head_1.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.552,
+        "summary": {
+          "total_rows": 4,
+          "total_columns": 5,
+          "missing_cells": 2,
+          "numeric_column_count": 1
+        },
+        "issues": [
+          "Workbook contains 2 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 4,
+            "column_count": 5,
+            "missing_cells": 2,
+            "duplicate_rows": 0,
+            "numeric_columns": [
+              "amount"
+            ],
+            "text_columns": [
+              "customer",
+              "region",
+              "order",
+              "status"
+            ],
+            "column_names": [
+              "customer",
+              "region",
+              "order",
+              "amount",
+              "status"
+            ],
+            "numeric_summary": {
+              "amount": {
+                "min": 1900.0,
+                "max": 4100.0,
+                "mean": 3062.5
+              }
+            },
+            "preview_rows": [
+              {
+                "customer": "",
+                "region": "EMEA",
+                "order": "ORD-1001",
+                "amount": 3400,
+                "status": "shipped"
+              },
+              {
+                "customer": "Nexa Ltd",
+                "region": "",
+                "order": "ORD-1002",
+                "amount": 2850,
+                "status": "pending"
+              },
+              {
+                "customer": "BluePeak",
+                "region": "APAC",
+                "order": "ORD-1003",
+                "amount": 4100,
+                "status": "shipped"
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Impute or remove missing values in critical columns"
+        ]
+      }
+    },
+    {
+      "id": "operations_report_reordered_columns_2",
+      "tags": [
+        "generated",
+        "operations_report",
+        "reordered_columns"
+      ],
+      "passed": true,
+      "latency_ms": 15.2897,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 186,
+        "estimated_input_tokens": 46
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
           "op": "eq",
-          "expected": 5,
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Impute or remove missing values in critical columns"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "impute"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "operations_report_reordered_columns_2\\.csv",
+          "actual": "operations_report_reordered_columns_2.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "operations_report_reordered_columns_2.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.602,
+        "summary": {
+          "total_rows": 4,
+          "total_columns": 5,
+          "missing_cells": 1,
+          "numeric_column_count": 1
+        },
+        "issues": [
+          "Workbook contains 1 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 4,
+            "column_count": 5,
+            "missing_cells": 1,
+            "duplicate_rows": 0,
+            "numeric_columns": [
+              "amount"
+            ],
+            "text_columns": [
+              "status",
+              "order",
+              "region",
+              "customer"
+            ],
+            "column_names": [
+              "status",
+              "amount",
+              "order",
+              "region",
+              "customer"
+            ],
+            "numeric_summary": {
+              "amount": {
+                "min": 1900.0,
+                "max": 4100.0,
+                "mean": 3062.5
+              }
+            },
+            "preview_rows": [
+              {
+                "status": "shipped",
+                "amount": 3400,
+                "order": "ORD-1001",
+                "region": "EMEA",
+                "customer": "Acme Corp"
+              },
+              {
+                "status": "pending",
+                "amount": 2850,
+                "order": "ORD-1002",
+                "region": "",
+                "customer": "Nexa Ltd"
+              },
+              {
+                "status": "shipped",
+                "amount": 4100,
+                "order": "ORD-1003",
+                "region": "APAC",
+                "customer": "BluePeak"
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Impute or remove missing values in critical columns"
+        ]
+      }
+    },
+    {
+      "id": "messy_sales_duplicate_tail_0",
+      "tags": [
+        "generated",
+        "messy_sales",
+        "duplicate_tail"
+      ],
+      "passed": true,
+      "latency_ms": 16.4389,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 172,
+        "estimated_input_tokens": 43
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
+          "op": "eq",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 6,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Review 2 duplicate rows before downstream reporting",
+            "Impute or remove missing values in critical columns",
+            "Use the detected numeric columns to build pivot summaries and trend checks"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute",
+            "duplicate"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "messy_sales_duplicate_tail_0\\.csv",
+          "actual": "messy_sales_duplicate_tail_0.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "messy_sales_duplicate_tail_0.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.3413,
+        "summary": {
+          "total_rows": 6,
+          "total_columns": 4,
+          "missing_cells": 7,
+          "numeric_column_count": 2
+        },
+        "issues": [
+          "Workbook contains 7 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 6,
+            "column_count": 4,
+            "missing_cells": 7,
+            "duplicate_rows": 2,
+            "numeric_columns": [
+              "revenue",
+              "orders"
+            ],
+            "text_columns": [
+              "date",
+              "region"
+            ],
+            "column_names": [
+              "date",
+              "revenue",
+              "region",
+              "orders"
+            ],
+            "numeric_summary": {
+              "revenue": {
+                "min": 1800.0,
+                "max": 2200.0,
+                "mean": 2100.0
+              },
+              "orders": {
+                "min": 18.0,
+                "max": 20.0,
+                "mean": 19.4
+              }
+            },
+            "preview_rows": [
+              {
+                "date": "2024-02-01",
+                "revenue": 2200.0,
+                "region": "",
+                "orders": 20.0
+              },
+              {
+                "date": "2024-02-01",
+                "revenue": 2200.0,
+                "region": "",
+                "orders": 20.0
+              },
+              {
+                "date": "2024-02-03",
+                "revenue": "",
+                "region": "EMEA",
+                "orders": 18.0
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Review 2 duplicate rows before downstream reporting",
+          "Impute or remove missing values in critical columns",
+          "Use the detected numeric columns to build pivot summaries and trend checks"
+        ]
+      }
+    },
+    {
+      "id": "messy_sales_missing_head_1",
+      "tags": [
+        "generated",
+        "messy_sales",
+        "missing_head"
+      ],
+      "passed": true,
+      "latency_ms": 15.6568,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 135,
+        "estimated_input_tokens": 33
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
+          "op": "eq",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
           "actual": 5,
           "passed": true
         },
         {
           "path": "summary.total_columns",
-          "op": "eq",
-          "expected": 4,
+          "op": "gte",
+          "expected": 1,
           "actual": 4,
           "passed": true
         },
         {
-          "path": "issues",
-          "op": "contains",
-          "expected": "Workbook contains 6 missing cells",
-          "actual": [
-            "Workbook contains 6 missing cells"
-          ],
-          "passed": true
-        },
-        {
           "path": "recommendations",
-          "op": "contains",
-          "expected": "Review 1 duplicate rows before downstream reporting",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
           "actual": [
-            "Review 1 duplicate rows before downstream reporting",
             "Impute or remove missing values in critical columns",
             "Use the detected numeric columns to build pivot summaries and trend checks"
           ],
-          "passed": true
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute"
+          ],
+          "threshold": 1
         },
         {
-          "path": "confidence",
-          "op": "lte",
-          "expected": 0.89,
-          "actual": 0.3325,
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "messy_sales_missing_head_1\\.csv",
+          "actual": "messy_sales_missing_head_1.csv",
           "passed": true
         }
       ],
       "prediction": {
-        "workbook_name": "messy_sales.csv",
+        "workbook_name": "messy_sales_missing_head_1.csv",
         "sheet_count": 1,
         "dataset_type": "financial",
-        "confidence": 0.3325,
+        "confidence": 0.2825,
         "summary": {
           "total_rows": 5,
           "total_columns": 4,
-          "missing_cells": 6,
+          "missing_cells": 7,
           "numeric_column_count": 2
         },
         "issues": [
-          "Workbook contains 6 missing cells"
+          "Workbook contains 7 missing cells"
         ],
         "sheet_summaries": [
           {
             "sheet_name": "Sheet1",
             "row_count": 5,
             "column_count": 4,
-            "missing_cells": 6,
-            "duplicate_rows": 1,
+            "missing_cells": 7,
+            "duplicate_rows": 0,
             "numeric_columns": [
               "revenue",
               "orders"
@@ -378,7 +1115,7 @@
             },
             "preview_rows": [
               {
-                "date": "2024-02-01",
+                "date": "",
                 "revenue": 2200.0,
                 "region": "",
                 "orders": 20.0
@@ -394,6 +1131,149 @@
                 "revenue": "",
                 "region": "EMEA",
                 "orders": 18.0
+              }
+            ]
+          }
+        ],
+        "recommendations": [
+          "Impute or remove missing values in critical columns",
+          "Use the detected numeric columns to build pivot summaries and trend checks"
+        ]
+      }
+    },
+    {
+      "id": "messy_sales_reordered_columns_2",
+      "tags": [
+        "generated",
+        "messy_sales",
+        "reordered_columns"
+      ],
+      "passed": true,
+      "latency_ms": 8.1712,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 145,
+        "estimated_input_tokens": 36
+      },
+      "assertions": [
+        {
+          "path": "sheet_count",
+          "op": "eq",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "path": "summary.total_rows",
+          "op": "gte",
+          "expected": 1,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "path": "summary.total_columns",
+          "op": "gte",
+          "expected": 1,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "path": "recommendations",
+          "op": "rubric_judge",
+          "expected": [
+            "numeric",
+            "summary",
+            "impute",
+            "duplicate"
+          ],
+          "actual": [
+            "Review 1 duplicate rows before downstream reporting",
+            "Impute or remove missing values in critical columns",
+            "Use the detected numeric columns to build pivot summaries and trend checks"
+          ],
+          "passed": true,
+          "judge": "rubric-judge",
+          "matched": [
+            "numeric",
+            "impute",
+            "duplicate"
+          ],
+          "threshold": 1
+        },
+        {
+          "path": "workbook_name",
+          "op": "regex",
+          "expected": "messy_sales_reordered_columns_2\\.csv",
+          "actual": "messy_sales_reordered_columns_2.csv",
+          "passed": true
+        }
+      ],
+      "prediction": {
+        "workbook_name": "messy_sales_reordered_columns_2.csv",
+        "sheet_count": 1,
+        "dataset_type": "financial",
+        "confidence": 0.3325,
+        "summary": {
+          "total_rows": 5,
+          "total_columns": 4,
+          "missing_cells": 6,
+          "numeric_column_count": 2
+        },
+        "issues": [
+          "Workbook contains 6 missing cells"
+        ],
+        "sheet_summaries": [
+          {
+            "sheet_name": "Sheet1",
+            "row_count": 5,
+            "column_count": 4,
+            "missing_cells": 6,
+            "duplicate_rows": 1,
+            "numeric_columns": [
+              "orders",
+              "revenue"
+            ],
+            "text_columns": [
+              "region",
+              "date"
+            ],
+            "column_names": [
+              "orders",
+              "region",
+              "revenue",
+              "date"
+            ],
+            "numeric_summary": {
+              "orders": {
+                "min": 18.0,
+                "max": 20.0,
+                "mean": 19.25
+              },
+              "revenue": {
+                "min": 1800.0,
+                "max": 2200.0,
+                "mean": 2075.0
+              }
+            },
+            "preview_rows": [
+              {
+                "orders": 20.0,
+                "region": "",
+                "revenue": 2200.0,
+                "date": "2024-02-01"
+              },
+              {
+                "orders": 20.0,
+                "region": "",
+                "revenue": 2200.0,
+                "date": "2024-02-01"
+              },
+              {
+                "orders": 18.0,
+                "region": "EMEA",
+                "revenue": "",
+                "date": "2024-02-03"
               }
             ]
           }

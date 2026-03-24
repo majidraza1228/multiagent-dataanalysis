@@ -1,6 +1,6 @@
 {
-  "adapter_name": "fastapi-api",
-  "framework": "fastapi",
+  "adapter_name": "workbook-analyzer",
+  "framework": "python",
   "total_cases": 3,
   "passed_cases": 3,
   "failed_cases": 0,
@@ -8,8 +8,10 @@
   "total_assertions": 18,
   "passed_assertions": 18,
   "assertion_pass_rate": 1.0,
-  "total_latency_ms": 32.85,
-  "average_latency_ms": 10.95,
+  "total_latency_ms": 43.9785,
+  "average_latency_ms": 14.6595,
+  "total_cost_usd": 0.0,
+  "average_cost_usd": 0.0,
   "cases": [
     {
       "id": "sales_clean_financial",
@@ -18,7 +20,13 @@
         "financial"
       ],
       "passed": true,
-      "latency_ms": 19.0284,
+      "latency_ms": 18.5676,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 120,
+        "estimated_input_tokens": 30
+      },
       "assertions": [
         {
           "path": "dataset_type",
@@ -147,7 +155,13 @@
         "operations"
       ],
       "passed": true,
-      "latency_ms": 6.6041,
+      "latency_ms": 18.9008,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 186,
+        "estimated_input_tokens": 46
+      },
       "assertions": [
         {
           "path": "dataset_type",
@@ -278,7 +292,13 @@
         "data-quality"
       ],
       "passed": true,
-      "latency_ms": 7.2175,
+      "latency_ms": 6.5101,
+      "cost_usd": 0.0,
+      "metadata": {
+        "cost_usd": 0.0,
+        "input_bytes": 139,
+        "estimated_input_tokens": 34
+      },
       "assertions": [
         {
           "path": "dataset_type",

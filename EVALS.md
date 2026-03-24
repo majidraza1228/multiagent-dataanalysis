@@ -69,10 +69,12 @@ flowchart LR
 eval_framework/
 ├── adapters.py       # Base adapter contract
 ├── datasets.py       # JSONL dataset loader
+├── judges.py         # Rubric and optional LLM judge hooks
 ├── metrics.py        # Assertion evaluation logic
 ├── registry.py       # Adapter registry for multi-run comparisons
 ├── reporter.py       # JSON report writer
 ├── runner.py         # Core eval execution
+├── types.py          # Invocation result and metadata types
 └── __init__.py
 
 evals/
@@ -80,6 +82,7 @@ evals/
 │   └── workbook_cases.jsonl
 ├── api_adapter.py
 ├── compare_adapters.py
+├── generate_cases.py
 ├── registry.py
 ├── workbook_adapter.py
 └── run_eval.py
@@ -144,6 +147,9 @@ This format is reusable because it does not assume a specific model family. It o
 - `not_contains`: value is absent from a list or string
 - `len_eq`: collection length equals value
 - `in`: actual value exists inside the expected collection
+- `regex`: regular expression match
+- `rubric_judge`: local rubric-based qualitative scoring
+- `llm_judge`: optional LLM-based qualitative scoring
 
 ## Current Project Integration
 
@@ -170,13 +176,20 @@ Optional flags:
 python3 evals/run_eval.py \
   --adapter fastapi-api \
   --dataset evals/cases/workbook_cases.jsonl \
-  --report evals/reports/latest.json
+  --report evals/reports/latest.json \
+  --workers 4
 ```
 
 Compare multiple adapters on the same benchmark:
 
 ```bash
-python3 evals/compare_adapters.py
+python3 evals/compare_adapters.py --workers 4
+```
+
+Generate larger synthetic datasets from the sample CSV seeds:
+
+```bash
+python3 evals/generate_cases.py --copies-per-source 20
 ```
 
 Optional MLflow logging:
@@ -186,11 +199,19 @@ python3 evals/run_eval.py --log-mlflow
 python3 evals/compare_adapters.py --log-mlflow
 ```
 
+Optional LLM judge support:
+
+```bash
+python3 evals/run_eval.py --enable-openai-judge
+python3 evals/compare_adapters.py --enable-openai-judge
+```
+
 Make targets:
 
 ```bash
 make eval
 make eval-compare
+make eval-generate
 ```
 
 ## What Gets Reported
@@ -204,6 +225,8 @@ The runner writes a JSON report with:
 - pass rate
 - assertion pass rate
 - total and average latency in milliseconds
+- total and average cost in USD
+- per-case metadata such as estimated token or byte counts
 - per-case assertion results
 - raw prediction payload for debugging failures
 
@@ -213,6 +236,98 @@ The comparison CLI also writes:
 - a summary JSON report
 - an HTML dashboard for side-by-side viewing
 - optional MLflow run metadata and report artifacts
+
+## Code Review And Refactoring
+
+The eval layer has been refactored to make it more suitable for reuse and larger workloads.
+
+Key improvements:
+
+- adapter execution now supports structured invocation metadata instead of only returning raw outputs
+- the runner now supports parallel execution through configurable worker counts
+- latency and cost are tracked as first-class metrics
+- judge logic is separated from simple assertion logic, which keeps the core runner smaller and easier to extend
+- file reads in the included adapters are cached to reduce repeated I/O during repeated comparisons
+
+This improves maintainability and also reduces the amount of special-case logic that would otherwise accumulate inside the runner.
+
+## Test Case Generation At Scale
+
+The framework now supports larger synthetic benchmark generation through [`generate_cases.py`](/Users/syedraza/multiagent-dataanalysis/evals/generate_cases.py).
+
+It creates variations of the seed CSV files using transformations such as:
+
+- duplicate-row variants
+- missing-value variants
+- reordered-column variants
+
+This helps with:
+
+- growing the benchmark set without hand-authoring every case
+- stress testing eval runtime and adapter behavior
+- building broader regression datasets quickly
+
+The generated dataset is written to `evals/generated/generated_cases.jsonl`.
+
+## Advanced Features
+
+### Cost Tracking
+
+Adapters can now return optional metadata that the runner stores in the report. This includes:
+
+- `cost_usd`
+- `input_bytes`
+- `estimated_input_tokens`
+
+That makes it possible to compare quality, latency, and cost together instead of treating quality as the only decision signal.
+
+### Judges
+
+The framework now supports two qualitative judging modes:
+
+- `rubric_judge`: local deterministic rubric matching
+- `llm_judge`: optional OpenAI-backed judge hook
+
+Use rubric judging when:
+
+- exact equality is too strict
+- recommendation quality matters more than exact phrasing
+- you want deterministic offline scoring
+
+Use LLM judging when:
+
+- the task is open-ended
+- semantic equivalence matters
+- there are multiple acceptable phrasings
+
+Example assertion:
+
+```json
+{
+  "path": "recommendations",
+  "op": "rubric_judge",
+  "judge": "rubric",
+  "value": ["numeric", "summary"],
+  "threshold": 1
+}
+```
+
+### Performance And Latency
+
+The runner now supports parallel execution through `--workers`. This reduces total wall-clock time when cases are independent.
+
+Example:
+
+```bash
+python3 evals/run_eval.py --workers 4
+python3 evals/compare_adapters.py --workers 4
+```
+
+For the current project, the main latency improvements come from:
+
+- parallel case execution
+- cached input file reads in adapters
+- shared runner logic instead of repeated one-off scripts
 
 ## How To Validate Eval Results
 
@@ -432,3 +547,4 @@ Examples of what those adapters can wrap:
 - add regression cases whenever a bug is fixed
 - freeze a small test set for release gating and a larger dev set for iteration
 - package `eval_framework/` as a reusable internal library or separate repo
+- add adapter-specific batch APIs where the underlying model supports batching
