@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Eval Comparison Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f1e8;
+      --panel: #fffaf0;
+      --ink: #1d1b18;
+      --muted: #6f665b;
+      --line: #d2c7b8;
+      --accent: #0f766e;
+      --accent-2: #92400e;
+    }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.10), transparent 30%),
+        radial-gradient(circle at top right, rgba(146, 64, 14, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--ink);
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+    h1, h2, h3 {
+      margin-bottom: 8px;
+    }
+    p {
+      color: var(--muted);
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 12px 30px rgba(29, 27, 24, 0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      color: var(--accent);
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--accent-2);
+    }
+    details {
+      margin: 10px 0;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Eval Comparison Report</h1>
+    <p>Dataset: evals/cases/workbook_cases.jsonl</p>
+    <div class="card">
+      <h2>Run Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Adapter</th>
+            <th>Framework</th>
+            <th>Cases</th>
+            <th>Case Pass Rate</th>
+            <th>Assertions</th>
+            <th>Assertion Pass Rate</th>
+            <th>Avg Latency ms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>workbook-analyzer</td><td>python</td><td>3/3</td><td>100.00%</td><td>18/18</td><td>100.00%</td><td>8.26</td></tr><tr><td>fastapi-api</td><td>fastapi</td><td>3/3</td><td>100.00%</td><td>18/18</td><td>100.00%</td><td>10.05</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Failing Cases</h2>
+      <section><h3>workbook-analyzer</h3><p>No failing cases.</p></section><section><h3>fastapi-api</h3><p>No failing cases.</p></section>
+    </div>
+  </main>
+</body>
+</html>
